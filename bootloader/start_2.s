@@ -46,15 +46,15 @@ start32:
 	movb $0x0C, %ah         # 属性：红底黑字
 
 print_loop:
-    lodsb               # 加载字符到 AL
-    cmpb $0, %al        # 检测字符串结束符
-    je .print_done
-    movw %ax, %gs:(%edi) # 写入显存（使用图形段选择子0x18）
-    addl $2, %edi       # 移动到下一个字符位置
-    jmp print_loop
+	lodsb               # 加载字符到 AL
+	cmpb $0, %al        # 检测字符串结束符
+	je .print_done
+	movw %ax, %gs:(%edi) # 写入显存（使用图形段选择子0x18）
+	addl $2, %edi       # 移动到下一个字符位置
+	jmp print_loop
 
 .print_done:
-    ret
+	ret
 
 
 loop32:
@@ -75,19 +75,19 @@ gdt: # 8 bytes for each table entry, at least 1 entry
 
 	# TODO：code segment entry
 	.word 0xFFFF      # 段限长（低16位）
-    .word 0x0000      # 基地址（低16位）
-    .byte 0x00        # 基地址（16-23位）
-    .byte 0b10011010  # 访问权限（P=1, DPL=0, S=1, Type=1010）
-    .byte 0b11001111  # 标志（G=1, D/B=1, AVL=0, Limit[19:16]=0xF）
-    .byte 0x00        # 基地址（24-31位）
+	.word 0x0000      # 基地址（低16位）
+	.byte 0x00        # 基地址（16-23位）
+	.byte 0b10011010  # 访问权限（P=1, DPL=0, S=1, Type=1010）
+	.byte 0b11001111  # 标志（G=1, D/B=1, AVL=0, Limit[19:16]=0xF）
+	.byte 0x00        # 基地址（24-31位）
 
 	# TODO：data segment entry
 	.word 0xFFFF, 0x0000
-    .byte 0x00, 0x92, 0xCF, 0x00
+	.byte 0x00, 0x92, 0xCF, 0x00
 
 	# TODO：graphics segment entry
 	.word 0x0FFF, 0x8000
-    .byte 0x0B, 0x92, 0x40, 0x00
+	.byte 0x0B, 0x92, 0x40, 0x00
 
 gdtDesc: 
 	.word (gdtDesc - gdt -1) 
