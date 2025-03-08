@@ -1,9 +1,12 @@
 #include "boot.h"
 
 #define SECTSIZE 512
-
+#define APP_ADDR 0x8c00
 void bootMain(void) {
 	//TODO
+	readSect((void*)APP_ADDR,1);
+	void(*app)(void) = (void(*)(void))APP_ADDR;
+	app();
 
 }
 

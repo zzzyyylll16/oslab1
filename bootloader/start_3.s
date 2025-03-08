@@ -9,7 +9,7 @@ start:
 	movw %ax, %es
 	movw %ax, %ss
 	# TODO:关闭中断
-
+	cli
 
 	# 启动A20总线
 	inb $0x92, %al 
@@ -21,6 +21,9 @@ start:
 
 	# TODO：设置CR0的PE位（第0位）为1
 
+	movl %cr0, %eax
+	orl $1, %eax
+	movl %eax, %cr0
 
 	# 长跳转切换至保护模式
 	data32 ljmp $0x08, $start32 # reload code segment selector and ljmp to start32, data32
@@ -48,17 +51,18 @@ gdt: # 8 bytes for each table entry, at least 1 entry
 	.byte 0,0,0,0
 
 	# TODO：code segment entry
-	.word
-	.byte 
+	.word 0xFFFF, 0x0000
+	.byte 0x00, 0x9A, 0xCF, 0x00
 
 	# TODO：data segment entry
-	.word
-	.byte 
+	.word 0xFFFF, 0x0000
+	.byte 0x00, 0x92, 0xCF, 0x00
 
 	# TODO：graphics segment entry
-	.word
-	.byte 
+	.word 0x0FFF, 0x8000
+	.byte 0x0B, 0x92, 0x40, 0x00
 
 gdtDesc: 
 	.word (gdtDesc - gdt - 1) 
 	.long gdt 
+	
