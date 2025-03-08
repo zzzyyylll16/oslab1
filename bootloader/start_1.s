@@ -63,7 +63,7 @@ counter:
     	.long 0                 # 32位计数器（50次=1秒）
 
 message:
-	.string "Hello, World!\n\0"
+	.string "Hello, World!\r\n\0"
 
 
 
