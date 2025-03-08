@@ -61,7 +61,7 @@ loop32:
 	jmp loop32
 
 message:
-	.string "Hello, World!\n\0"
+	.string "Hello, World!\0"
 
 
 
